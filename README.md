@@ -1,11 +1,11 @@
-#Sodo - **Crowdfunding Sanitary Platform- Kenya**
+# Sodo - **Crowdfunding Sanitary Platform- Kenya**
 
 Sodo is a crowdfunding platform for the purpose of collection , management and distribution of Sanitary to women in Kenya.
 
 Sodo is a swahili word that means "sanitary pads". sodo is also the name of the sanitary towel Crowdfunding platform created for women by women. sodo uses the power of project management and crowdsourcing to collect and distribute sanitary pads to the women.
 
 
-#What key role does sodo play?
+# What key role does sodo play?
 
 1.Creation of projects inorder to facilitate a certain area of study.sodo is a platform where an individual, an organization or a group of organizations can create a project focusing on Sanitary pads.
 
@@ -17,7 +17,7 @@ Sodo is a swahili word that means "sanitary pads". sodo is also the name of the 
 
 5.Sodo will also play a key role in aiding with disposing of used sanitary towels.
 
-#Objectives of SODO
+# Objectives of SODO
 
 1.Keep the girl child in school. Ensure that no girl misses school due to lack of sanitary towels.
 
@@ -25,4 +25,4 @@ Sodo is a swahili word that means "sanitary pads". sodo is also the name of the 
 
 3.Ensure a clean and hygienic environment through correct disposal of sanitary towels.
 
-4. Ensure transparency in the crowdfunding of sanitary resources.
+4.Ensure transparency in the crowdfunding of sanitary resources.
