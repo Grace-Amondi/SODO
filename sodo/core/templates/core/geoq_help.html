@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+{% load bootstrap_toolkit %}
+{% load url from future %}
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sodo: User Guide</title>
+    <script src="{{ STATIC_URL }}core/js/jquery.min.js"></script>
+
+    {% bootstrap_stylesheet_tag %}
+    {% bootstrap_stylesheet_tag "responsive" %}
+    {% bootstrap_javascript_tag %}
+
+    <style type="text/css">
+        /* CSS used here will be applied after bootstrap.css */
+        .panel a {
+            color: #777;
+        }
+
+        .panel a:hover {
+            text-decoration: none;
+            color: #222;
+        }
+
+        .panel .table td {
+            border-color: #f3f3f3;
+        }
+
+        img {
+            border: 5px solid black;
+        }
+
+        .panel ol a {
+            color: #0044cc;
+        }
+    </style>
+</head>
+<body>
+{% block container %}
+    <div class="container">
+        <h1>
+            <a name="user-content-sodo" class="anchor" href="{% url 'home' %}">Sodo User Guide</a></h1>
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span
+                                            class="glyphicon glyphicon-folder-close"></span> Sodo Overview</a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <h4>
+                                                    <a name="user-content-geographic-work-queueing-and-tasking-system"
+                                                       class="anchor"
+                                                       href="#geographic-work-queueing-and-tasking-system">
+                                                        <span class="octicon octicon-link"></span>
+                                                    </a>
+                                                    Geographic Work Queueing and Tasking System
+                                                </h4>
+                                                <p>The aim of the Sodo system is to create an open source geographic
+                                                    health tasking
+                                                    system that allows teams to collect geographic health data across a
+                                                    large area,
+                                                    but manage the work in smaller geographic regions. Large areas can
+                                                    be
+                                                    quickly broken up into small 1km squares and assigned to a team.
+                                                    System transparency informs all groups about workflow to avoid
+                                                    duplication of effort.
+                                                </p>
+                                                <figure>
+                                                    <img src="../../../static/images/Sodo-Logo.png"
+                                                         style="width:50%;text-align: center">
+                                                </figure>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span
+                                            class="glyphicon glyphicon-user"></span> Starting a New Project</a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <a href="#create-project">Create Project</a>
+                                                <p></p>
+                                                <p>
+                                                    The highest element within a Sodo workflow, a Project will normally
+                                                    encompass
+                                                    all the activities surrounding a particular event. Projects can be
+                                                    thought of
+                                                    as a folder that will organize all work done for that event.
+
+                                                </p>
+                                                <p>
+                                                    To create a Project, simply click the <a href="#">Project</a>
+                                                    (<b>Note: you will need to have a privileged account
+                                                    to have access to this function</b>):
+                                                    <br/>
+                                                </p>
+                                                <img src="../../../static/images/jobo10.png">
+                                                <p>
+                                                    <br/>then the 'New' button from the Project list page: <br/><br/>
+                                                </p>
+                                                <img src="../../../static/images/jobo11.png">
+                                                <p>
+                                                    <br/>The Create Project page will allow you to enter the appropriate
+                                                    information
+                                                    regarding your new project:<br/>
+                                                </p>
+                                                <img src="../../../static/images/Sodo%20(1).png">
+                                                <p>
+                                                    <br/>Once saved, you'll now be able to add Jobs to your Project.
+                                                </p>
+                                                <br/>You will find the following tools and information once you
+                                                create/select your Project. On this page you can edit your Project, add
+                                                a New Job
+                                                view information on the Project, and view the Jobs assigned to the
+                                                Project:
+                                                <p>
+                                                    <img src="../../../static/images/create.png">
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="#create-new-jobs">Creating a Job</a>
+                                                <p></p>
+                                                <p>A Job is a task that Users will complete in each Work Cell (the area
+                                                    that the User wants evaluated)</p>
+                                                <img src="../../../static/images/help/jobo.png"/>
+                                                <p><br/>Once you select 'Add New Job', you will be able to set up your
+                                                    Job settings:</p>
+                                                <img src="../../../static/images/jobo2.png"/>
+                                                <p><br/>After saving and creating your new Job, the Jobs page will
+                                                    appear. On this page you can create Work Cells within the Job, view
+                                                    the status of your Work Cells, view the Job on a map, edit the Map,
+                                                    etc.:</p>
+                                                <img src="../../../static/images/jobo3.png">
+
+                                                <h3>Creating Work Cells</h3>
+                                                <p>Work Cells are specific areas where the Job will be completed. Once
+                                                    you select 'Create Workcells' you will be able to select the area
+                                                    where you want your job executed and prioritize each Work Cell: </p>
+                                                <img src="../../../static/images/jobo4.png"/>
+
+                                                <h3>Working on the Job</h3>
+                                                <p>Once you select a Work Cell, you can begin evaluating the area based
+                                                    on the Job given:</p>
+                                                <img src="../../../static/images/jobo5.png"/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span
+                                            class="glyphicon glyphicon-th"></span> Demo Video</a>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <p><b>This video gives an overview of operating the system.</b></p>
+                                                {#                        <img src="{{ STATIC_URL }}images/help/VideoThumbnail.png"#}
+                                                {#                             style="cursor:pointer"#}
+                                                {#                             onclick="window.open('{{ STATIC_URL }}help_video/UserHelpVideo.html');" />#}
+                                                <iframe class="tscplayer_inline" id="embeddedSmartPlayerInstance"
+                                                        src="../../../static/help_video/scripts/nimbus-record-video-2017-07-29-00-04-45.webm"
+                                                        scrolling="no" frameborder="0" webkitAllowFullScreen
+                                                        mozallowfullscreen allowFullScreen
+                                                        width="900" height="600"></iframe>
+
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive"><span
+                                            class="glyphicon glyphicon-th"></span> Maps, Layers, and Features</a>
+                                </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <a href="#maps">Maps</a>
+                                                <p> To create a new map, layer, or feature, select it from the dropdown
+                                                    box on the maps tab and click ADD NEW</p>
+                                                <img src="../../../static/images/jobo6.png"/>
+                                                <h3>Create New Map</h3>
+                                                <p>Maps may be created at the administrative level to organize the set
+                                                    of layers needed for a job as well as the initial view</p>
+                                                <img src="../../../static/images/jobo7.png"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="#layers">Layers</a>
+                                                <p>Different layers may be created to customize your map.Layers are map
+                                                    imagery that a user may overlay on the map while completing a job.
+                                                    Please note that all sections of the Create New Layer do not
+                                                    necessarily have to be filled out, but rather depend on the type of
+                                                    layer being created.
+                                                    <img src="../../../static/images/jobo8.png"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="#features">Features</a>
+                                                <p>Feature types may be created to place on the map while completing a
+                                                    job.
+                                                    <img src="../../../static/images/jobo9.png"/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight"><span
+                                            class="glyphicon glyphicon-th"></span>Map Analytics</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="collapseEight" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <p>Below is the map analytics section.</p>
+                                        <figure>
+                                            <img src="../../../static/images/jobo12.png">
+                                        </figure>
+                                        <p>Clicking on one feature type(marker) will dispaly the button to view
+                                            the nearest health facility.</p>
+                                        <figure>
+                                            <img src="../../../static/images/jobo13.png">
+                                        </figure>
+                                        <p>Once the Show nearest button is clicked the map will zoom to the
+                                            nearesthealth facilites within 500 meters from the feature type.</p>
+                                        <figure>
+                                            <img src="../../../static/images/jobo14.png">
+                                        </figure>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix"><span
+                                        class="glyphicon glyphicon-th"></span> APIs and Data Access</a>
+                            </h4>
+                        </div>
+                        <div id="collapseSix" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="#maps">APIs</a>
+                                            <p> The following endpoints can be used to Access data remotely:</p>
+                                            <ul>
+                                                <li><a href="{% url 'json-layers' %}">http://server/sodo/<b>api/layers.json</b></a>
+                                                </li>
+                                                <li><a href="{% url 'json-job' pk=1 %}">http://server/sodo/<b>api/jobs/&lt;id&gt;.geojson</b></a>
+                                                </li>
+                                                <li><a href="{% url 'json-job-grid' pk=1 %}">http://server/sodo/<b>api/jobs/&lt;id&gt;/grid/job-workcells.geojson</b></a>
+                                                </li>
+                                                <li><a href="{% url 'kml-job' pk=1 %}">http://server/sodo/<b>api/jobs/&lt;id&gt;.kml</b></a>
+                                                </li>
+                                                <li><a href="{% url 'kml-networked-job' pk=1 %}">http://server/sodo/<b>api/jobs/&lt;id&gt;.networked.kml</b></a>
+                                                </li>
+                                                <li><a href="{% url 'shape-job' pk=1 %}">http://server/sodo/<b>api/jobs/&lt;id&gt;.shp.zip</b>
+                                                    (Workcells)</a></li>
+                                                <li><a href="{% url 'shape-job-type' pk=1 type='points' %}">http://server/sodo/<b>api/jobs/&lt;id&gt;.points.shp.zip</b></a>
+                                                </li>
+                                                <li><a href="{% url 'shape-job-type' pk=1 type='polygons' %}">http://server/sodo/<b>api/jobs/&lt;id&gt;.polygons.shp.zip</b></a>
+                                                </li>
+                                                <li><a href="{% url 'json-job-features' pk=1 %}">http://server/sodo/<b>api/jobs/&lt;id&gt;features.json</b></a>
+                                                </li>
+                                                <li><a href="{% url 'json-job-features-links' pk=1 %}">http://server/sodo/<b>api/jobs/&lt;id&gt;features.withlinks.json</b>
+                                                    (With linked items)</a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven"><span
+                                        class="glyphicon glyphicon-th"></span> Known Issues</a>
+                            </h4>
+                        </div>
+                        <div id="collapseSeven" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="#maps">Use of Mobile Devices</a>
+                                            <p> Sodo allows mobile smartphones (iPads, iPhones, Androids) to log on
+                                                to the system to review information, but currently does not support
+                                                drawing features or editing workcells. We are working on this
+                                                functionality.</p>
+                                            <p> Note that if you are unable to log in, it's likely because you have
+                                                Mobile Safari or Chrome set to not allow cookies. Disabling this
+                                                setting frequently fixes the problem.</p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-sm-9">
+            </div>
+        </div>
+    </div>
+    </div> <!-- container -->
+{% endblock %}
+
+</body>
+</html>

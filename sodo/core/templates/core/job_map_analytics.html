@@ -1,0 +1,260 @@
+{% extends "core/base.html" %}
+{% load compress %}
+{% load leaflet_tags %}
+{% load geoserver_job_link %}
+{% block title %}Sodo Map Analytics: {{ object.name }}{% endblock %}
+{% block jquery_version %}1.8.3{% endblock %}
+{% block jquery_ui_version %}1.9.2{% endblock %}
+
+
+{% block static_libraries %}
+    {% leaflet_css %}
+
+    <script src="{{ STATIC_URL }}leaflet-1.0.0-rc1/leaflet.js"></script>
+    <script src="{{ STATIC_URL }}core/js/leaflet-knn.min.js"></script>
+    <script src="{{ STATIC_URL }}core/js/geojson-bbox.min.js"></script>
+
+
+    <script type="text/javascript">
+        //Auto-exported site-wide settings
+        var features_url = "{{ features_url|default:'' }}";
+        var job_id = "{{job_id}}";
+
+        var gj = L.geoJson(null);
+
+        $(document).ready(function () {
+            //initialize metrics map
+            var map = L.map('job_map', {
+                center: [0, 0]
+            });
+            L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ3JhY2VhbW9uZGkiLCJhIjoiY2ozcmlydTIwMDAyOTJ3bzVsaWdvYTJ6cCJ9.kAk8OZpXt1sOPNjLo-RyOg', {
+                maxZoom: 20,
+                attribution: ' Tiles &copy; <a href="http://www.mapbox.com">MapBox</a>'
+            }).addTo(map);
+            //function to set workcell color according to status
+            function getworkcellcolor(s) {
+                return s === "Completed" ? 'red' :
+                    s === "Unassigned" ? 'green' :
+                        s === "Assigned" ? 'grey' :
+                            s === "In work" ? '#FC4E2A' :
+                                s === "Awaiting review" ? '#FD8D3C' :
+                                    s === "In review" ? 'orange' :
+                                        "#FFEDA0";
+            }
+
+            // do the actual styling
+            function workcell_style(feature) {
+                // console.log(feature.properties.status);
+                return {
+                    fill: false,
+                    weight: 2,
+                    color: getworkcellcolor(feature.properties.status)
+                };
+            }
+
+            //define workcells layer
+            var job_workcells_layer = L.geoJSON(null, {
+                style: workcell_style
+            });
+
+
+            //job layer
+            var job_layer = L.geoJSON(null, {
+                style: function (feature) {
+                    if (feature.style !== null) {
+                        return {color: feature.style.fillColor}
+                    }
+                },
+                pointToLayer: function (feature, latlng) {
+                    if (feature.style !== null) {
+                        var fillcolor = feature.style.fillColor;
+                        if (fillcolor !== undefined) {
+                            return L.marker(latlng, {
+                                icon: L.icon({
+                                    iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-" + fillcolor + ".png",
+                                    iconSize: [25, 41],
+                                    iconAnchor: [12, 41],
+                                    popupAnchor: [1, -34]
+                                }),
+                                title: feature.properties.status,
+                                riseOnHover: true
+                            });
+                        }
+                    } else {
+                        return L.marker(latlng, {
+                            icon: L.icon({
+                                iconUrl: feature.style['external-graphic'],
+                                iconSize: [24, 28],
+                                iconAnchor: [12, 28],
+                                popupAnchor: [0, -25]
+                            }),
+                            title: feature.properties.NAME,
+                            riseOnHover: true
+                        });
+                    }
+                },
+                onEachFeature: function (feature, layer) {
+                    var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Analyst</th><td>" + feature.properties.analyst + "</td></tr>" + "<tr><th>Severity</th><td>" + feature.properties.severity + "</td></tr>" + "<table>";
+                    layer.on({
+                        click: function (e) {
+                            var lat = e.latlng.lat;
+                            var lng = e.latlng.lng;
+                            $("#feature-title").html(feature.properties.severity);
+                            $("#feature-info").html(content);
+                            $("#featureModal").modal("show");
+                            $("#show-btn").attr("lat", lat);
+                            $("#show-btn").attr("lng", lng);
+                        }
+                    });
+
+                }
+
+            });
+
+
+            var job_geojson_url = '/sodo/api/job/' + job_id + '.geojson';
+            var job_grid_url = '/sodo/api/jobs/' + job_id + '/grid/job-workcells.geojson';
+
+
+            console.log(job_id);
+            //get job geojson and add to map
+            $.getJSON(job_geojson_url, function (job_geojson) {
+                job_layer.addData(job_geojson);
+                console.log(job_geojson);
+                map.fitBounds(job_layer.getBounds());
+                map.addLayer(job_layer);
+            });
+            //get workcell geojson and add to map
+            $.getJSON(job_grid_url, function (job_workcells) {
+                job_workcells_layer.addData(job_workcells);
+                var workcell_bounds = job_workcells_layer.getBounds();
+                map.fitBounds(workcell_bounds);
+                map.addLayer(job_workcells_layer);
+                $.ajax({
+                    type: "POST",
+                    url: 'http://127.0.0.1:8100/facilities/',
+                    data: {"bounds": workcell_bounds.toBBoxString()},
+                    success: function (data) {
+                        gj.addData(data);
+                    }
+                });
+            });
+
+            $("#show-btn").click(function (e) {
+                e.preventDefault();
+                var lat = $("#show-btn").attr('lat');
+                var lng = $("#show-btn").attr('lng');
+                showNearest(parseFloat(lat), parseFloat(lng));
+            });
+
+            var nearest_facilities = L.geoJSON(null, {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                        icon: L.icon({
+                            iconUrl: "/static/images/markers/health.png",
+                            iconSize: [24, 28],
+                            iconAnchor: [12, 28],
+                            popupAnchor:[0,-25]
+                        })
+                    });
+                },
+                onEachFeature: function (feature, layer) {
+                    var content = feature.properties.name;
+                    layer.bindPopup(content);
+                }
+            });
+
+            function showNearest(lat, lng) {
+                var nearest = leafletKnn(gj).nearest(L.latLng(lat, lng), 5, 500);
+                $("#featureModal").modal("hide");
+                if (nearest.length < 1) {
+                    {#                    $('#nofacility').show();#}
+                    {#                    $("#nofacility").fadeTo(2000, 500).slideUp(500, function () {#}
+                    {#                        $("#nofacility").alert('close');#}
+                    {#                    });#}
+                    console.log("No facility found")
+                } else {
+                    var geojson = [];
+                    nearest.forEach(function (l) {
+                        var data = l.layer.feature;
+                        geojson.push(data);
+                    });
+
+                    var collection = {
+                            features: geojson,
+                            type: 'FeatureCollection'
+                        };
+
+                    var extents = bbox(collection);
+                     nearest_facilities.addData(collection);
+                     map.fitBounds([[extents[1],extents[0]],[extents[3],extents[2]]])
+                }
+
+                map.addLayer(nearest_facilities);
+            }
+
+
+            // function setMapFilters(job_data){
+            //     var flags = [], output = [], l = job_data.length, i;
+            //     for( i=0; i<l; i++) {
+            //         if( flags[job_data[i].severity]) continue;
+            //         flags[job_data[i].severity] = true;
+            //         output.push(job_data[i].severity);
+            //     }
+            //     $.each(output, function (i,item) {
+            //         $('#mapfilter').append($('<option>', {
+            //             text : item
+            //         }));
+            //       });
+            //   }
+        });
+
+
+    </script>
+    {% compress css %}
+        <!-- <link href="{{ STATIC_URL }}core/less/sodo.less" media="all" rel="stylesheet" type="text/less"/> -->
+    {% endcompress %}
+{% endblock %}
+
+{% block container %}
+    <div class="row-fluid container-narrow">
+
+        <div class="projectlist">
+
+            {# {% include 'core/_job_stat_list.html' %}#}
+
+            <h3>
+                {# <span class="icon-inbox icon-1x pull-left list-icon"></span>#}
+                <span class="title header">
+                    <a href="{% url 'job-detail' object.id %}">{{ object.name }} Map Analytics</a>
+                </span>
+            </h3>
+
+            <p class="body project-description">
+                <b>Job Details:</b> {{ object.description }}
+            </p>
+        </div>
+        <div class="row job_map">
+            <div id="job_map" style="height:600px;"></div>
+        </div>
+
+        <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title text-primary" id="feature-title"></h4>
+                    </div>
+                    <div class="modal-body" id="feature-info"></div>
+                    <div class="modal-footer">
+                        <button type="button" id="show-btn" class="btn btn-success btn-sm">SHOW NEAREST</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div class="alert alert-danger" id="nofacility" role="alert" style="display:none;top:0px">No facility found
+            within 500 meters
+        </div>
+    </div>
+{% endblock %}

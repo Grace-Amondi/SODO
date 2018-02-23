@@ -1,0 +1,14 @@
+{
+ "services": {
+   "postgresql": [
+     {
+       "credentials": {
+         "username":"sodo",
+         "password":"sodo1234",
+         "host":"sodo"
+       },
+       "label": "Sodo_Postgresql"
+     }
+   ]
+ }
+}
