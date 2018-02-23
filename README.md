@@ -1,5 +1,7 @@
 # Sodo - **Crowdfunding Sanitary Platform- Kenya**
 
+![](https://sodo.mybluemix.net/static/images/sodo.png "Sodo Logo")
+
 Sodo is a crowdfunding platform for the purpose of collection , management and distribution of Sanitary to women in Kenya.
 
 Sodo is a swahili word that means "sanitary pads". sodo is also the name of the sanitary towel Crowdfunding platform created for women by women. sodo uses the power of project management and crowdsourcing to collect and distribute sanitary pads to the women.
@@ -26,3 +28,35 @@ Sodo is a swahili word that means "sanitary pads". sodo is also the name of the 
 3.Ensure a clean and hygienic environment through correct disposal of sanitary towels.
 
 4.Ensure transparency in the crowdfunding of sanitary resources.
+
+# How to get Sodo up and running on your machine
+
+1.Clone repository first
+
+```git clone https://github.com/Grace-Amondi/SODO.git```
+
+move to root of folder
+
+```cd SODO```
+
+2.Create virtual environment
+
+```mkvirtualenv sodo```
+
+3.Install requiremnets
+
+```pip install -r requirements.txt```
+
+4.Populate your database with fixtures
+
+```python manage.py syncdb```
+
+5.Migrate your apps
+
+```python manage.py migrate```
+
+6.Finally run your SDOD on localhost:8000
+
+```python manage.py runserver```
+
+
