@@ -23,3 +23,5 @@ runGeo.sh
 
 start.sh
 node_modules/
+
+.vscode/
